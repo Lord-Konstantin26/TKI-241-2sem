@@ -1,20 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <iterator>
+#include <algorithm>
 
 int main() {
     std::vector<int> V;
     std::map<int, int> M;
-    int N;
     
-    std::cout << "Enter number of elements: ";
-    std::cin >> N;
+    std::cout << "Enter elements (Ctrl+D/Ctrl+Z to end): ";
     
-    std::cout << "Enter " << N << " elements: ";
-    for (int i = 0; i < N; ++i) {
-        int value;
-        std::cin >> value;
-        V.push_back(value);
+    // Считываем все числа из потока ввода до конца
+    std::copy(std::istream_iterator<int>(std::cin),
+              std::istream_iterator<int>(),
+              std::back_inserter(V));
+    
+    if (V.empty()) {
+        std::cout << "No elements entered!" << std::endl;
+        return 1;
     }
     
     // Заполнение отображения M без использования условных конструкций
