@@ -23,13 +23,12 @@ int main() {
         return 1;
     }
     
-    int N = D.size();
+    size_t n = D.size();  // теперь маленькая n
     auto i = D.begin();
-    std::advance(i, N / 2);
+    std::advance(i, n / 2);
     
-    for (int k = 0; k < N / 2; ++k) {
+    for (size_t k = 0; k < n / 2; ++k) {  // здесь тоже n
         i = D.insert(i, -1);
-        
         ++i;
         ++i;
     }
