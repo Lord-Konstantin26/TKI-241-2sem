@@ -1,8 +1,9 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <functional>
 #include <cmath>
+#include <iterator>
 
 struct less_abs : public std::function<bool(int, int)> {
     bool operator()(int a, int b) const {
@@ -15,40 +16,42 @@ struct less_abs : public std::function<bool(int, int)> {
     }
 };
 
+void printVector(const std::vector<int>& V, const std::string& message) {
+    std::cout << message << ": ";
+    for (int num : V) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+}
+
 int main() {
     std::vector<int> V;
-    int n, num;
-
-    std::cout << "Введите количество элементов: ";
-    std::cin >> n;
-
-    std::cout << "Введите " << n << " целых чисел: ";
-    for (int i = 0; i < n; ++i) {
-        std::cin >> num;
-        V.push_back(num);
+    
+    std::cout << "Введите целые числа (Ctrl+D/Ctrl+Z для окончания ввода): ";
+    
+    // Считываем все числа из потока ввода до конца
+    std::copy(std::istream_iterator<int>(std::cin),
+              std::istream_iterator<int>(),
+              std::back_inserter(V));
+    
+    if (V.empty()) {
+        std::cout << "Ошибка: не введено ни одного числа!" << std::endl;
+        return 1;
     }
-
-    std::cout << "\nИсходный вектор: ";
-    for (int num : V) {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
+    
+    printVector(V, "Исходный вектор");
+    
     less_abs cmp;
-
     std::sort(V.begin(), V.end(), cmp);
-
-    std::cout << "Отсортированный вектор (по |a| < |b|): ";
-    for (int num : V) {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
+    
+    printVector(V, "Отсортированный вектор (по |a| < |b|)");
+    
+    // Вывод абсолютных значений
     std::cout << "Абсолютные значения: ";
     for (int num : V) {
         std::cout << std::abs(num) << " ";
     }
     std::cout << std::endl;
-
+    
     return 0;
 }
