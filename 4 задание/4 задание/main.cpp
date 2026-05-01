@@ -1,35 +1,8 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <functional>
-#include <cmath>
-#include <iterator>
-
-struct less_abs : public std::function<bool(int, int)> {
-    bool operator()(int a, int b) const {
-        return std::abs(a) < std::abs(b);
-    }
-
-    less_abs() : std::function<bool(int, int)>(
-        [this](int a, int b) { return this->operator()(a, b); }
-    ) {
-    }
-};
-
-void printVector(const std::vector<int>& V, const std::string& message) {
-    std::cout << message << ": ";
-    for (int num : V) {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-}
-
 int main() {
     std::vector<int> V;
     
     std::cout << "Введите целые числа (Ctrl+D/Ctrl+Z для окончания ввода): ";
     
-    // Считываем все числа из потока ввода до конца
     std::copy(std::istream_iterator<int>(std::cin),
               std::istream_iterator<int>(),
               std::back_inserter(V));
@@ -46,12 +19,13 @@ int main() {
     
     printVector(V, "Отсортированный вектор (по |a| < |b|)");
     
-    // Вывод абсолютных значений
-    std::cout << "Абсолютные значения: ";
+    // Создаем вектор абсолютных значений
+    std::vector<int> absV;
+    absV.reserve(V.size());
     for (int num : V) {
-        std::cout << std::abs(num) << " ";
+        absV.push_back(std::abs(num));
     }
-    std::cout << std::endl;
+    printVector(absV, "Абсолютные значения");
     
     return 0;
 }
